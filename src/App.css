@@ -1,3 +1,7 @@
 .react-flow__background{
     background-color: #110E13;
 }
+
+/* .react-flow__node{
+    pointer-events: none;
+} */

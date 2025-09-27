@@ -1,15 +1,26 @@
-import type{ Node, Edge, FitViewOptions, OnConnect, OnNodesChange, OnEdgesChange, OnNodeDrag, DefaultEdgeOptions,
-} from '@xyflow/react';
 
-import { ReactFlow, Background, Controls } from '@xyflow/react';
+
 import '@xyflow/react/dist/style.css';
 
 import { useState, useCallback } from 'react';
-import { applyEdgeChanges, applyNodeChanges, addEdge } from '@xyflow/react';
-import { Handle } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges, addEdge, useReactFlow, ReactFlowProvider, Handle  } from '@xyflow/react';
+
 import './App.css'
 
+export function DefaultNode() {
 
+  return (
+    <div className="nodrag react-flow__node-default">
+      <Handle type="target" position="top" />
+      <div>Default Node</div>
+      <Handle type="source" position="bottom" />
+    </div>
+  );
+}
+
+const nodeTypes = {
+  nodetype: DefaultNode,
+};
 
 import dagre from "dagre";
 
@@ -55,27 +66,30 @@ export function getLayoutedElements(
 
   return { nodes: layoutedNodes, edges };
 }
-const aaa = "Node 1"
+
+
 
 const initialNodes = [
-  { id: "n1", position: { x: 0, y: 0 }, data: { label: aaa } },
-  { id: "n2", position: { x: 100, y: 100 }, data: { label: "Node 2" } },
-  { id: "n3", position: { x: 250, y: 150 }, data: { label: "Node 3" } },
-  { id: "n4", position: { x: 350, y: 150 }, data: { label: "Node 4" } },
+  { id: "n1", type: 'nodetype', position: { x: 0, y: 0 }, data: { label: "Node 1" } },
+  { id: "n2", type: 'nodetype', position: { x: 100, y: 100 }, data: { label: "Node 2" } },
+  { id: "n3", type: '', position: { x: 250, y: 150 }, data: { label: "Node 3" } },
+  { id: "n4", type: '', position: { x: 350, y: 150 }, data: { label: "Node 4" } },
+  { id: "n5", type: '', position: { x: 350, y: 150 }, data: { label: "Node 5" } },
 ];
 
 const initialEdges = [
   { id: "n1-n2", source: "n1", target: "n2", animated: true },
   { id: "n1-n3", source: "n1",  target: "n3", animated: true },
   { id: "n1-n4", source: "n1",  target: "n4", animated: true },
+  { id: "n2-n5", source: "n2",  target: "n5", animated: true },
+  { id: "n1-n5", source: "n1",  target: "n5", animated: true },
 ];
 
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+let { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialNodes,
   initialEdges,
   "TB" // or "LR"
 );
-
 
 
 export default function App() {
@@ -95,15 +109,26 @@ const onConnect = useCallback(
   [],
 );
 
+function openWorkspace() {
+  
+};
+
+
+
+
   return (
-    <div className='nodrag' style={{ height: '100vh', width: '100vw' }}>
+    <div className="react-flow__node nodrag" style={{ height: '100vh', width: '100vw' }}>
+
       <ReactFlow
-        className='nodrag'
+        className='react-flow__node nodrag'
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        onNodeClick={openWorkspace}
+        noDragClassName='nodrag'
         fitView
         colorMode='dark'
       >
@@ -111,6 +136,7 @@ const onConnect = useCallback(
         <Controls />
       </ReactFlow>
     </div>
+
   );
 }
 
