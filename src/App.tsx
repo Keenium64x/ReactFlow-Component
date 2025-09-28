@@ -7,20 +7,7 @@ import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges, ad
 
 import './App.css'
 
-export function DefaultNode() {
 
-  return (
-    <div className="nodrag react-flow__node-default">
-      <Handle type="target" position="top" />
-      <div>Default Node</div>
-      <Handle type="source" position="bottom" />
-    </div>
-  );
-}
-
-const nodeTypes = {
-  nodetype: DefaultNode,
-};
 
 
 
@@ -86,11 +73,11 @@ export function getLayoutedElements(
 
 
 const initialNodes = [
-  { id: "n1", type: '', position: { x: 0, y: 0 }, data: { label: "Node 1" } },
-  { id: "n2", type: '', position: { x: 100, y: 100 }, data: { label: "Node 2" } },
-  { id: "n3", type: '', position: { x: 250, y: 150 }, data: { label: "Node 3" } },
-  { id: "n4", type: '', position: { x: 350, y: 150 }, data: { label: "Node 4" } },
-  { id: "n5", type: '', position: { x: 350, y: 150 }, data: { label: "Node 5" } },
+  { id: "n1", type: 'nodetype', position: { x: 0, y: 0 }, data: { label: "Node 1" } },
+  { id: "n2", type: 'nodetype', position: { x: 100, y: 100 }, data: { label: "Node 2" } },
+  { id: "n3", type: 'nodetype', position: { x: 250, y: 150 }, data: { label: "Node 3" } },
+  { id: "n4", type: 'nodetype', position: { x: 350, y: 150 }, data: { label: "Node 4" } },
+  { id: "n5", type: 'nodetype', position: { x: 350, y: 150 }, data: { label: "Node 5" } },
 ];
 
 const initialEdges = [
@@ -121,8 +108,19 @@ const onEdgesChange = useCallback(
   [],
 );
 const onConnect = useCallback(
-  (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-  [],
+  (params) => {
+    setEdges((edgesSnapshot) => {
+      const newEdges = addEdge({ ...params, animated: true }, edgesSnapshot);
+
+      // re-layout using current nodes + new edges
+      const { nodes: newLayoutedNodes, edges: newLayoutedEdges } =
+        getLayoutedElements(nodes, newEdges, "TB"); // or "LR"
+
+      setNodes(newLayoutedNodes);
+      return newLayoutedEdges;
+    });
+  },
+  [nodes, setNodes]
 );
 
 const onNodesDelete = useCallback(
@@ -146,27 +144,120 @@ const onNodesDelete = useCallback(
   [nodes, edges, setNodes, setEdges]
 );
 
+const onEdgesDelete = useCallback(
+  (deletedEdges) => {
+    // filter out the deleted edges
+    const deletedIds = new Set(deletedEdges.map((e) => e.id));
+    const remainingEdges = edges.filter((e) => !deletedIds.has(e.id));
+
+    // re-layout using current nodes + remaining edges
+    const { nodes: newLayoutedNodes, edges: newLayoutedEdges } =
+      getLayoutedElements(nodes, remainingEdges, "TB"); // or "LR"
+
+    setNodes(newLayoutedNodes);
+    setEdges(newLayoutedEdges);
+  },
+  [nodes, edges, setNodes, setEdges]
+);
+
+
+function DefaultNode(node) {
+
+  const onAddChild = useCallback(
+  (parentId) => {
+    // make a unique id for the new node
+    const newNodeId = `node_${+new Date()}`;
+
+    // define the new node
+    const newNode = {
+      id: newNodeId,
+      type: 'nodetype',
+      data: { label: `Node ${nodes.length + 1}` },
+      position: { x: 0, y: 0 }, // dagre will reposition
+    };
+
+    // define the new edge (animated)
+    const newEdge = {
+      id: `${parentId}-${newNodeId}`,
+      source: parentId,
+      target: newNodeId,
+      animated: true,
+    };
+
+    // update state
+    const updatedNodes = [...nodes, newNode];
+    const updatedEdges = [...edges, newEdge];
+
+    // recalc layout
+    const { nodes: newLayoutedNodes, edges: newLayoutedEdges } =
+      getLayoutedElements(updatedNodes, updatedEdges, "TB"); // or "LR"
+
+    setNodes(newLayoutedNodes);
+    setEdges(newLayoutedEdges);
+  },
+  [nodes, edges, setNodes, setEdges]
+);
+
+  return (
+  <div
+    className="nodrag react-flow__node-default"
+    style={{ position: "relative", padding: 10 }}
+  >
+    <Handle type="target" position="top" />
+    <div>Default Node</div>
+
+    <button
+      onClick={() => onAddChild(node.id)}
+      style={{
+        position: "absolute",
+        bottom: -12, // just outside the node
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: 24,
+        height: 24,
+        borderRadius: "50%",
+        border: "none",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        cursor: "pointer",
+        fontSize: 16,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+      }}
+    >
+      +
+    </button>
+
+    <Handle style={{opacity: "0", background: "transparent", border: "none", color: "transparent",}} type="source" position="bottom" />
+  </div>
+  );
+}
+
+const nodeTypes = {
+  nodetype: DefaultNode,
+};
+
 
 function openWorkspace() {
   console.log(nodes); console.log(edges);
 };
 
-
-
-
   return (
-    <div className="react-flow__node nodrag" style={{ height: '100vh', width: '100vw' }}>
+    <div style={{ height: '100vh', width: '100vw' }}>
       <button onClick={openWorkspace}>Refresh</button>
       <ReactFlow
-        className='react-flow__node nodrag'
+
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodesDelete={onNodesDelete}
+        onEdgesDelete={onEdgesDelete}
         nodeTypes={nodeTypes}
         // onNodeClick={openWorkspace}
-        onNodesDelete={onNodesDelete}
         noDragClassName='nodrag'
         fitView
         colorMode='dark'
