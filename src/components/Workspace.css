@@ -1,0 +1,66 @@
+.wb-min{
+    background-size: 13px auto !important;
+    padding-bottom: 2px !important;
+    color: #ceaa5e !important;
+}
+
+.wb-max{
+    background-size: 13px auto !important;
+    color: #ceaa5e !important;
+}
+
+.wb-full{
+    background-size: 13px auto !important;
+    color: #ceaa5e !important;
+}
+
+.wb-close{
+    background-size: 13px auto !important;
+    color: #ceaa5e !important;
+}
+
+.wb-header{
+
+    background: url('./../public/corporate-bg-winboxsvg.svg') center/cover repeat,
+    #110E13;
+    background-size: 100px;
+}
+
+.wb-body{
+    background-color: #1b181f;
+}
+
+.wb-body::-webkit-scrollbar-corner {
+    width: 0;   
+    height: 0;
+}
+
+.wb-body::-webkit-scrollbar-thumb:window-inactive {
+    width: 0;   
+    height: 0;
+}
+
+.wb-body::-webkit-scrollbar-thumb {
+    width: 0;   
+    height: 0;
+}
+
+.wb-body::-webkit-scrollbar-track {
+    width: 0;   
+    height: 0;
+}
+
+.wb-body::-webkit-scrollbar {
+    width: 0;   
+    height: 0;
+}
+
+.wb-title::-webkit-scrollbar {
+    width: 0;   
+    height: 0;
+}
+
+.wb-n::-webkit-scrollbar {
+    width: 0;   
+    height: 0;
+}

@@ -1,13 +1,9 @@
-
-
-import '@xyflow/react/dist/style.css';
-
 import { useState, useCallback } from 'react';
-import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges, addEdge, useReactFlow, ReactFlowProvider, Handle  } from '@xyflow/react';
-
+import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges, addEdge, Handle  } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import './App.css'
 
-
+import Workspace from './components/Workspace';
 
 
 
@@ -240,13 +236,18 @@ const nodeTypes = {
 };
 
 
-function openWorkspace() {
-  console.log(nodes); console.log(edges);
-};
+const [showWorkspace, setShowWorkspace] = useState(false);
+const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
+
+function openWorkspace(event, node) {
+  setCurrentNodeId(node);               // store the clicked node ID
+  setShowWorkspace((prev) => !prev);      // toggle visibility
+}
+
+
 
   return (
     <div style={{ height: '100vh', width: '100vw' }}>
-      <button onClick={openWorkspace}>Refresh</button>
       <ReactFlow
 
         nodes={nodes}
@@ -257,7 +258,7 @@ function openWorkspace() {
         onNodesDelete={onNodesDelete}
         onEdgesDelete={onEdgesDelete}
         nodeTypes={nodeTypes}
-        // onNodeClick={openWorkspace}
+        onNodeClick={openWorkspace}
         noDragClassName='nodrag'
         fitView
         colorMode='dark'
@@ -265,9 +266,11 @@ function openWorkspace() {
         <Background />
         <Controls />
       </ReactFlow>
+      {showWorkspace && <Workspace nodePressed={currentNodeId} />}
     </div>
 
   );
+  
 }
 
 

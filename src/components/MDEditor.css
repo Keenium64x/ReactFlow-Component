@@ -1,0 +1,131 @@
+@import url('@radix-ui/colors/tomato-dark.css');
+@import url('@radix-ui/colors/mauve-dark.css');
+
+.dark-editor {
+  --accentBase: var(--tomato-1);
+  --accentBgSubtle: var(--tomato-2);
+  --accentBg: var(--tomato-3);
+  --accentBgHover: var(--tomato-4);
+  --accentBgActive: var(--tomato-5);
+  --accentLine: var(--tomato-6);
+  --accentBorder: var(--tomato-7);
+  --accentBorderHover: var(--tomato-8);
+  --accentSolid: var(--tomato-9);
+  --accentSolidHover: var(--tomato-10);
+  --accentText: var(--tomato-11);
+  --accentTextContrast: var(--tomato-12);
+
+  --baseBase: var(--mauve-1);
+  --baseBgSubtle: var(--mauve-2);
+  --baseBg: #271549;
+  --baseBgHover: var(--mauve-4);
+  --baseBgActive: var(--mauve-5);
+  --baseLine: var(--mauve-6);
+  --baseBorder: var(--mauve-7);
+  --baseBorderHover: var(--mauve-8);
+  --baseSolid: var(--mauve-9);
+  --baseSolidHover: var(--mauve-10);
+  --baseText: var(--mauve-11);
+  --baseTextContrast: var(--mauve-12);
+
+  --admonitionTipBg: var(--cyan4);
+  --admonitionTipBorder: var(--cyan8);
+  
+  --admonitionInfoBg: var(--grass4);
+  --admonitionInfoBorder: var(--grass8);
+
+  --admonitionCautionBg: var(--amber4);
+  --admonitionCautionBorder: var(--amber8);
+
+  --admonitionDangerBg: var(--red4);
+  --admonitionDangerBorder: var(--red8);
+
+  --admonitionNoteBg: var(--mauve-4);
+  --admonitionNoteBorder: var(--mauve-8);
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  color: var(--baseText);
+  --basePageBg: #1b181f;
+  background: var(--basePageBg);
+
+}
+
+.mdxeditor-toolbar{
+  background-color: #110E13;
+  color: #ceaa5e;
+}
+
+.dark-editor .cm-editor,
+.dark-editor .cm-scroller {
+  background-color: #110E13 !important; /* your custom black */
+}
+
+.ͼo .cm-activeLineGutter {
+    background-color: #271549;
+}
+
+
+.dark-editor .mdxeditor-toolbar button:hover {
+  background-color: #271549; /* your custom hover color */
+}
+
+.dark-editor .mdxeditor-toolbar svg {
+  color: #DDB967;
+}
+
+.mdxeditor-select-content{
+  background-color: #100e12;
+}
+
+.mdxeditor-popup-container div div{
+  background-color: #110E13;
+  color: #DDB967;
+}
+
+.mdxeditor-root-contenteditable p{
+  color: #DDB967;
+}
+
+.cm-scroller{
+  color: #DDB967;
+}
+
+.cm-gutters div{
+  color: #41351D;
+}
+
+.ͼ4 .cm-content{
+  background-color: #1b181f;
+}
+
+.mdxeditor-diff-source-wrapper div{ 
+  color: #DDB967;
+}
+
+.cm-matchingBracket {
+  background-color: #09080a !important;
+}
+
+.cm-selectionMatch{
+  background-color: #ddba6744 !important;
+}
+
+
+.mdxeditor-diff-source-wrapper {
+  height: 400px;       /* fixed height */
+  max-height: 400px;   /* ensure it doesn’t grow */
+  overflow: auto;      
+  box-sizing: border-box;
+ 
+}
+
+.mdxeditor-diff-source-wrapper::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;  
+}
+
+a{
+  color: #FDE68A;
+}
