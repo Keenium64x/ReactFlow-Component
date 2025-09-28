@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { ReactFlow, Background, Controls, applyEdgeChanges, applyNodeChanges, addEdge, Handle  } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import './App.css'
+import './StatePlanning.css'
 
 import Workspace from './components/Workspace';
 
@@ -91,7 +91,7 @@ let { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 );
 
 
-export default function App() {
+export default function StatePlanning() {
   const [nodes, setNodes] = useState(layoutedNodes);
   const [edges, setEdges] = useState(layoutedEdges);
 
@@ -239,9 +239,11 @@ const nodeTypes = {
 const [showWorkspace, setShowWorkspace] = useState(false);
 const [currentNodeId, setCurrentNodeId] = useState<string | null>(null);
 
-function openWorkspace(event, node) {
-  setCurrentNodeId(node);               // store the clicked node ID
-  setShowWorkspace((prev) => !prev);      // toggle visibility
+function openWorkspace(event: React.MouseEvent, node: string) {
+  if (event.target.tagName !== 'BUTTON') { 
+    setCurrentNodeId(node);               
+    setShowWorkspace((prev) => !prev);      
+  }
 }
 
 

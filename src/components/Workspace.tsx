@@ -8,7 +8,7 @@ import './Workspace.css'
 
 export default function Workspace(props) {
     let nodePressed = props.nodePressed
-    console.log(nodePressed)
+    // console.log(nodePressed)
 
     WinBox.bind
     return (
